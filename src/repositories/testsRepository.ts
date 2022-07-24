@@ -32,6 +32,30 @@ export async function getTestsByDiscipline() {
   return test;
 }
 
-const testRepository = { createTest, getTestsByDiscipline };
+export async function getTestsByTeacher() {
+  const test = await prisma.teachers.findMany({
+    select: {
+      name: true,
+      TeacherDiscipline: {
+        select: {
+          Disciplines: {
+            select: { name: true, Terms: { select: { number: true } } },
+          },
+          tests: {
+            select: {
+              name: true,
+              pdfUrl: true,
+              Categories: { select: { name: true } },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return test;
+}
+
+const testRepository = { createTest, getTestsByDiscipline, getTestsByTeacher };
 
 export default testRepository;

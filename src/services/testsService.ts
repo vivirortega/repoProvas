@@ -10,6 +10,11 @@ export async function getTestsByDiscipline(){
     return tests;
 }
 
-const testsService = { createTest, getTestsByDiscipline };
+export async function getTestsByTeacher(){
+    const tests = await testRepository.getTestsByTeacher();
+    return tests;
+}
+
+const testsService = { createTest, getTestsByDiscipline, getTestsByTeacher };
 
 export default testsService;
