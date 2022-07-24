@@ -6,3 +6,10 @@ export async function signup(req: Request, res: Response) {
     await authService.createUser(data);
     res.sendStatus(201);
 }
+
+export async function login(req: Request, res: Response) {
+    const data = req.body;
+    const token = await authService.login(data);
+    res.send(token);
+    
+}
