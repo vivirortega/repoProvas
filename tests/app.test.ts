@@ -108,3 +108,24 @@ describe("POST/create-test", () => {
     expect(result.status).toBe(400);
   });
 });
+
+describe("GET/tests/disciplines", () => {
+  it("return tests by disciplines", async () => {
+    const response = await supertest(app).post("/login").send(login);
+    const token = response.body.token;
+    console.log(token);
+    const result = await supertest(app)
+      .get("/tests/disciplines")
+      .set("Authorization", `Bearer ${token}`);
+    expect(result.status).toBe(200);
+  });
+
+  it("should return 500 when sent with invalid token", async () => {
+    const response = await supertest(app)
+      .get("/tests/disciplines")
+      .set("Authorization", `Bearer invalid-token`);
+    expect(response.status).toBe(500);
+  });
+
+});
+
