@@ -9,7 +9,7 @@ export async function createUser(user: UserService) {
   const userExist = await authRepository.checkEmail(email);
   if (userExist) {
     throw {
-      type: "unauthorized",
+      type: "conflict",
       message: "email already registered",
     };
   }
@@ -24,7 +24,7 @@ export async function login(userData: UserService) {
 
   if (!user) {
     throw {
-      type: "unauthorized",
+      status: "unauthorized",
       message: "Wrong email or password",
     };
   }
