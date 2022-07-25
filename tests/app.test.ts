@@ -72,7 +72,6 @@ describe("POST/create-test", () => {
   it("given a body, create test", async () => {
     const response = await supertest(app).post("/login").send(login);
     const token = response.body.token;
-    console.log(token);
     const result = await supertest(app)
       .post("/create-test")
       .send(test)
@@ -113,7 +112,6 @@ describe("GET/tests/disciplines", () => {
   it("return tests by disciplines", async () => {
     const response = await supertest(app).post("/login").send(login);
     const token = response.body.token;
-    console.log(token);
     const result = await supertest(app)
       .get("/tests/disciplines")
       .set("Authorization", `Bearer ${token}`);
@@ -126,6 +124,22 @@ describe("GET/tests/disciplines", () => {
       .set("Authorization", `Bearer invalid-token`);
     expect(response.status).toBe(500);
   });
-
 });
 
+describe("GET/tests/disciplines", () => {
+  it("return tests by teachers", async () => {
+    const response = await supertest(app).post("/login").send(login);
+    const token = response.body.token;
+    const result = await supertest(app)
+      .get("/tests/teacher")
+      .set("Authorization", `Bearer ${token}`);
+    expect(result.status).toBe(200);
+  });
+
+  it("should return 500 when sent with invalid token", async () => {
+    const response = await supertest(app)
+      .get("/tests/teacher")
+      .set("Authorization", `Bearer invalid-token`);
+    expect(response.status).toBe(500);
+  });
+});
