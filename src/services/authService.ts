@@ -3,19 +3,28 @@ import { Users } from "@prisma/client";
 import { UserService } from "../types/genericTypes";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { encryptPassword } from "../utils/authUtils";
 
-export async function createUser(user: UserService) {
-  const { email, password } = user;
-  const userExist = await authRepository.checkEmail(email);
+export type newUser = {
+  email: string;
+  password: string;
+  passwordConfirmation: string;
+};
+
+export async function createUser(user: newUser) {
+  const userExist = await authRepository.checkEmail(user.email);
   if (userExist) {
     throw {
       type: "conflict",
       message: "email already registered",
     };
   }
-  const SALT = 10;
-  user.password = await bcrypt.hash(password, SALT);
-  await authRepository.createUser(user);
+
+  const encryptedPassword = encryptPassword(user.password);
+  await authRepository.createUser({
+    email: user.email,
+    password: encryptedPassword,
+  });
 }
 
 export async function login(userData: UserService) {

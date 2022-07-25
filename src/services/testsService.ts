@@ -1,7 +1,7 @@
 import testRepository from "../repositories/testsRepository";
-import { testService } from "../types/genericTypes";
+import { TestService } from "../types/genericTypes";
 
-export async function createTest(test: testService) {
+export async function createTest(test: TestService) {
     await testRepository.createTest(test);
 }
 

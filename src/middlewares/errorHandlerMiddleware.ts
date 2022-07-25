@@ -8,6 +8,7 @@ export default async function errorHandler( error, req: Request, res: Response, 
   if (error.type === "unauthorized") {
     return res.status(401).send(error.message)
 }
-  
+   console.log(error.message)
   return res.sendStatus(500)
+  
 }

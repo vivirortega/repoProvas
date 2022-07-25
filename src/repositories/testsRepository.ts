@@ -1,7 +1,7 @@
 import prisma from "../config/database";
-import { testService } from "../types/genericTypes";
+import { TestService } from "../types/genericTypes";
 
-export async function createTest(test: testService) {
+export async function createTest(test: TestService) {
   return await prisma.tests.create({ data: test });
 }
 

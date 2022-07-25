@@ -1,7 +1,7 @@
 import joi from "joi";
-import { testService } from "../types/genericTypes";
+import { TestService } from "../types/genericTypes";
 
-export const testsSchema = joi.object<testService>({
+export const testsSchema = joi.object<TestService>({
   name: joi.string().required(),
   pdfUrl: joi.string().required(),
   categoryId: joi.number().required(),

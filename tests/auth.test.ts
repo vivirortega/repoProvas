@@ -4,12 +4,12 @@ import { faker } from "@faker-js/faker";
 
 const email = faker.internet.email();
 const password = faker.internet.password();
-const confirmPassword = password;
+const signup = { email: email, password: password, confirmPassword: password };
 const login = { email: email, password: password };
 
 describe("POST/sign-up", () => {
   it("given email and password, create user", async () => {
-    const response = await supertest(app).post("/sign-up").send(login);
+    const response = await supertest(app).post("/sign-up").send(signup);
     expect(response.status).toBe(201);
   });
 
@@ -19,11 +19,16 @@ describe("POST/sign-up", () => {
   });
 
   it("should answer status 409 when email is already in use", async () => {
+    const response = await supertest(app).post("/sign-up").send(signup);
+    expect(response.status).toBe(409);
+  });
+
+  it("should answer status 500 when sent with no confirm password", async () => {
     const response = await supertest(app).post("/sign-up").send({
       email: email,
       password: password,
     });
-    expect(response.status).toBe(409);
+    expect(response.status).toBe(500);
   });
 });
 
