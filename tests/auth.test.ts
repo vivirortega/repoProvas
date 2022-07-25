@@ -15,7 +15,7 @@ describe("POST/sign-up", () => {
 
   it("should answer status 500 when sent with no email and password", async () => {
     const response = await supertest(app).post("/sign-up").send();
-    expect(response.status).toBe(500); 
+    expect(response.status).toBe(500);
   });
 
   it("should answer status 409 when email is already in use", async () => {
@@ -24,5 +24,33 @@ describe("POST/sign-up", () => {
       password: password,
     });
     expect(response.status).toBe(409);
+  });
+});
+
+describe("POST/login", () => {
+  it("should return 200 when credentials are valid", async () => {
+    const response = await supertest(app).post("/login").send(login);
+    expect(response.status).toBe(200);
+  });
+
+  it("should return 401 when email are invalid", async () => {
+    const response = await supertest(app).post("/login").send({
+      email: "123test@gmail.com",
+      password: password,
+    });
+    expect(response.status).toBe(401);
+  });
+
+  it("should return 401 when password are invalid", async () => {
+    const response = await supertest(app).post("/login").send({
+      email: email,
+      password: "wrong_password",
+    });
+    expect(response.status).toBe(401);
+  });
+
+  it("should return 500 when sent with no email and password", async () => {
+    const response = await supertest(app).post("/login").send();
+    expect(response.status).toBe(500);
   });
 });

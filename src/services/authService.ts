@@ -24,7 +24,7 @@ export async function login(userData: UserService) {
 
   if (!user) {
     throw {
-      status: "unauthorized",
+      type: "unauthorized",
       message: "Wrong email or password",
     };
   }
