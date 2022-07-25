@@ -10,6 +10,6 @@ export async function signup(req: Request, res: Response) {
 export async function login(req: Request, res: Response) {
     const data = req.body;
     const token = await authService.login(data);
-    res.send(token);
+    return res.status(200).send(token);
     
 }
