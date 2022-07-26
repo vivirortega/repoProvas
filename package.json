@@ -7,7 +7,7 @@
     "start": "node dist/server.js",
     "dev": "tsnd --transpile-only --respawn --ignore-watch node_modules src/server.ts",
     "test": "jest --passWithNoTests --noStackTrace --runInBand",
-    "build": "tsc"
+    "build": "npx prisma migrate deploy && tsc"
   },
   "keywords": [],
   "author": "",
