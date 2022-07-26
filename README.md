@@ -1,5 +1,6 @@
 <div align="center">
 <h1>RepoProvas. 📖 </h1>
+<a href="https://repoprovasz.herokuapp.com/">deploy: repoprovas - heroku</a>
 </div>
 <h2>Sobre o projeto:</h1>
 RepoProvas é um sistema de compartilhamento de provas entre estudantes!
