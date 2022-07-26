@@ -20,9 +20,9 @@ describe("POST/sign-up", () => {
     expect(response.status).toBe(201);
   });
 
-  it("should answer status 400 when sent with no email and password", async () => {
+  it("should answer status 422 when sent with no email and password", async () => {
     const response = await supertest(app).post("/sign-up").send();
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(422);
   });
 
   it("should answer status 409 when email is already in use", async () => {
@@ -30,12 +30,12 @@ describe("POST/sign-up", () => {
     expect(response.status).toBe(409);
   });
 
-  it("should answer status 400 when sent with no confirm password", async () => {
+  it("should answer status 422 when sent with no confirm password", async () => {
     const response = await supertest(app).post("/sign-up").send({
       email: email,
       password: password,
     });
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(422);
   });
 });
 
@@ -62,9 +62,9 @@ describe("POST/login", () => {
     expect(response.status).toBe(401);
   });
 
-  it("should return 400 when sent with no email and password", async () => {
+  it("should return 422 when sent with no email and password", async () => {
     const response = await supertest(app).post("/login").send();
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(422);
   });
 });
 
@@ -79,20 +79,22 @@ describe("POST/create-test", () => {
     expect(result.status).toBe(201);
   });
 
-  it("should return 500 when sent with no body", async () => {
-    const response = await supertest(app).post("/create-test").send();
-    expect(response.status).toBe(500);
+  it("should return 422 when sent with no body", async () => {
+    const response = await supertest(app).post("/login").send(login);
+    const token = response.body.token;
+    const result = await supertest(app).post("/create-test").send().set("Authorization", `Bearer ${token}`);
+    expect(result.status).toBe(422);
   });
 
-  it("should return 500 when sent with invalid token", async () => {
+  it("should return 401 when sent with invalid token", async () => {
     const response = await supertest(app)
       .post("/create-test")
       .send(test)
       .set("Authorization", `Bearer invalid-token`);
-    expect(response.status).toBe(500);
+    expect(response.status).toBe(401);
   });
 
-  it("should return 400 when sent with invalid body", async () => {
+  it("should return 422 when sent with invalid body", async () => {
     const response = await supertest(app).post("/login").send(login);
     const token = response.body.token;
     const result = await supertest(app)
@@ -104,7 +106,7 @@ describe("POST/create-test", () => {
         teacherDisciplineId: 1,
       })
       .set("Authorization", `Bearer ${token}`);
-    expect(result.status).toBe(400);
+    expect(result.status).toBe(422);
   });
 });
 
@@ -118,11 +120,11 @@ describe("GET/tests/disciplines", () => {
     expect(result.status).toBe(200);
   });
 
-  it("should return 500 when sent with invalid token", async () => {
+  it("should return 401 when sent with invalid token", async () => {
     const response = await supertest(app)
       .get("/tests/disciplines")
       .set("Authorization", `Bearer invalid-token`);
-    expect(response.status).toBe(500);
+    expect(response.status).toBe(401);
   });
 });
 
@@ -136,10 +138,10 @@ describe("GET/tests/disciplines", () => {
     expect(result.status).toBe(200);
   });
 
-  it("should return 500 when sent with invalid token", async () => {
+  it("should return 401 when sent with invalid token", async () => {
     const response = await supertest(app)
       .get("/tests/teacher")
       .set("Authorization", `Bearer invalid-token`);
-    expect(response.status).toBe(500);
+    expect(response.status).toBe(401);
   });
 });

@@ -9,22 +9,16 @@ export async function tokenValidator(
   const { authorization } = req.headers;
   const token = authorization?.replace("Bearer ", "").trim();
   const secretKey = process.env.JWT_SECRET;
-  const user = jwt.verify(token, secretKey);
 
-  if (!user) {
-    throw {
-      type: "not_found",
-      message: "User not found",
-    };
-  }
-
-  if (!token) {
+  try {
+    const user = jwt.verify(token, secretKey);
+    res.locals.user = user;
+  } catch (e) {
     throw {
       type: "unauthorized",
-      message: "No token",
+      message: "No Token",
     };
   }
 
-  res.locals.user = user;
   next();
 }
