@@ -64,7 +64,7 @@ GET /tests/teachers
 <h3>Clone o repositório:</h3>
 
 ```
-$ git clone https://github.com/matheuslnmoura/projeto17-linkr_back-end:git
+$ git clone https://github.com/unverzed/repoProvas.git
 ```
 <h3>Instale as dependências:</h3>
 
